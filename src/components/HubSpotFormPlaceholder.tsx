@@ -12,7 +12,7 @@ const HubSpotFormPlaceholder: React.FC = () => (
     <div className="mb-4 text-muted-foreground">
       Embed your HubSpot form code here in place of this message.<br />
       <span className="text-xs">
-        (Go to HubSpot > Marketing > Lead Capture > Forms, and use the Embed snippet)
+        (Go to HubSpot &gt; Marketing &gt; Lead Capture &gt; Forms, and use the Embed snippet)
       </span>
     </div>
     <div className="text-muted-foreground italic text-sm">[HubSpot Form EMBED goes here]</div>
@@ -20,3 +20,4 @@ const HubSpotFormPlaceholder: React.FC = () => (
 );
 
 export default HubSpotFormPlaceholder;
+
