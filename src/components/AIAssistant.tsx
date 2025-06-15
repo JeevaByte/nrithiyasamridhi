@@ -178,7 +178,12 @@ const AIAssistant = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Glossary Terms</CardTitle>
-                  <CardDescription>Available in the knowledge base</CardDescription>
+                  <CardDescription>
+                    Available in the knowledge base
+                    <Button variant="link" className="h-auto p-0 ml-2" asChild>
+                      <a href="/glossary">View full glossary →</a>
+                    </Button>
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2 max-h-64 overflow-y-auto">
                   {glossaryTerms.slice(0, 8).map((term) => (
