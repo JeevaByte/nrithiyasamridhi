@@ -1,9 +1,11 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Book, Globe, Video, Calendar, Mic, Camera } from 'lucide-react';
+import { Book, Globe, Video, Calendar } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const FeaturesSection = () => {
+  const navigate = useNavigate();
   const features = [
     {
       id: 'learn',
@@ -16,7 +18,8 @@ const FeaturesSection = () => {
         'Notation converter for jathis to mnemonics',
         'Progressive skill-building courses'
       ],
-      color: 'bharata-crimson'
+      color: 'bharata-crimson',
+      route: '/learn',
     },
     {
       id: 'perform',
@@ -29,7 +32,8 @@ const FeaturesSection = () => {
         'Virtual performance challenges',
         'AI feedback on technique and expression'
       ],
-      color: 'bharata-gold'
+      color: 'bharata-gold',
+      route: '/community',
     },
     {
       id: 'connect',
@@ -42,7 +46,8 @@ const FeaturesSection = () => {
         'Collaborative project opportunities',
         'Cultural events calendar'
       ],
-      color: 'bharata-copper'
+      color: 'bharata-copper',
+      route: '/community',
     },
     {
       id: 'explore',
@@ -55,7 +60,8 @@ const FeaturesSection = () => {
         'Festival celebrations and traditions',
         'Stories of devotion from students'
       ],
-      color: 'bharata-deepRed'
+      color: 'bharata-deepRed',
+      route: '/glossary',
     }
   ];
 
@@ -96,6 +102,7 @@ const FeaturesSection = () => {
                   <Button 
                     variant="outline" 
                     className="w-full border-bharata-gold text-bharata-crimson hover:bg-bharata-gold/10"
+                    onClick={() => navigate(feature.route)}
                   >
                     Explore {feature.title}
                   </Button>
