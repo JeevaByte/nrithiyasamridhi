@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,13 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				bharata: {
+					crimson: '#8B0000',
+					gold: '#DAA520',
+					cream: '#F5F5DC',
+					deepRed: '#B91C1C',
+					copper: '#B87333'
 				}
 			},
 			borderRadius: {
@@ -84,11 +92,32 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'dance-flow': {
+					'0%': {
+						transform: 'translateY(0px) rotate(0deg)'
+					},
+					'50%': {
+						transform: 'translateY(-10px) rotate(2deg)'
+					},
+					'100%': {
+						transform: 'translateY(0px) rotate(0deg)'
+					}
+				},
+				'gentle-sway': {
+					'0%, 100%': {
+						transform: 'translateX(0px)'
+					},
+					'50%': {
+						transform: 'translateX(5px)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'dance-flow': 'dance-flow 3s ease-in-out infinite',
+				'gentle-sway': 'gentle-sway 4s ease-in-out infinite'
 			}
 		}
 	},
