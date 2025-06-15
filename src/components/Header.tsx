@@ -14,11 +14,17 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { Menu, Sun, Moon } from "lucide-react"
 import { useAuth } from '@/hooks/useAuth';
 
+// Available languages for UI
+const LANGUAGES = [
+  { code: "en", label: "English" },
+  { code: "ta", label: "தமிழ்" },
+  { code: "hi", label: "हिंदी" },
+];
+
 // Theme Toggle helper
 const ThemeToggle = () => {
   // Determine the theme and store in localStorage so it persists
   const [theme, setTheme] = React.useState<'light' | 'dark'>(() => {
-    // Check local storage or prefer system
     if (typeof window === 'undefined') return 'light';
     return (localStorage.getItem('theme') as 'light' | 'dark') ||
       (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -54,6 +60,7 @@ const ThemeToggle = () => {
 const Header = () => {
   const { user, signOut } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [lang, setLang] = useState('en');
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -68,16 +75,41 @@ const Header = () => {
     { name: 'Glossary', href: '/glossary' },
   ];
 
+  // Language switcher as a dropdown
+  const LanguageDropdown = () => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" className="font-medium text-xs px-2 ml-0">
+          {LANGUAGES.find((l) => l.code === lang)?.label || "English"}
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start">
+        {LANGUAGES.map(({ code, label }) => (
+          <DropdownMenuItem
+            key={code}
+            onClick={() => setLang(code)}
+            className={lang === code ? "font-bold text-bharata-crimson" : ""}
+          >
+            {label}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
   return (
     <header className="bg-white/95 dark:bg-background/90 backdrop-blur-sm shadow-sm sticky top-0 z-50 transition-colors">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-4 group">
-            <div className="w-14 h-14 bg-gradient-to-br from-bharata-crimson to-bharata-gold rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-              <span className="text-white font-bold text-2xl tracking-wider select-none">NS</span>
+            <div className="w-20 h-20 bg-gradient-to-br from-bharata-crimson to-bharata-gold rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+              <span className="text-white font-bold text-3xl tracking-wider select-none">NS</span>
             </div>
-            <span className="font-bold text-3xl tracking-tight text-bharata-crimson dark:text-bharata-gold transition-colors uppercase font-playfair select-none">
+            <span
+              className="font-playfair text-4xl md:text-5xl tracking-tight text-bharata-crimson dark:text-bharata-gold transition-colors uppercase select-none"
+              style={{ letterSpacing: "0.08em", fontWeight: 700, fontFamily: "'Playfair Display', serif" }}
+            >
               nithiyasamridhi
             </span>
           </Link>
@@ -95,8 +127,9 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Desktop Auth Buttons + Theme Toggle */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Desktop Auth Buttons + Theme Toggle + Language */}
+          <div className="hidden md:flex items-center space-x-2">
+            <LanguageDropdown />
             <ThemeToggle />
             {user ? (
               <DropdownMenu>
@@ -135,8 +168,9 @@ const Header = () => {
             )}
           </div>
 
-          {/* Mobile menu button + Theme Toggle */}
+          {/* Mobile menu button + Theme Toggle + Language */}
           <div className="md:hidden flex items-center gap-2">
+            <LanguageDropdown />
             <ThemeToggle />
             <Button
               variant="ghost"
