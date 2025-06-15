@@ -9,7 +9,256 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      events: {
+        Row: {
+          created_at: string | null
+          current_participants: number | null
+          description: string | null
+          event_date: string | null
+          event_type: Database["public"]["Enums"]["event_type"]
+          id: string
+          is_virtual: boolean | null
+          location: string | null
+          max_participants: number | null
+          organizer_id: string | null
+          registration_url: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_participants?: number | null
+          description?: string | null
+          event_date?: string | null
+          event_type: Database["public"]["Enums"]["event_type"]
+          id?: string
+          is_virtual?: boolean | null
+          location?: string | null
+          max_participants?: number | null
+          organizer_id?: string | null
+          registration_url?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          current_participants?: number | null
+          description?: string | null
+          event_date?: string | null
+          event_type?: Database["public"]["Enums"]["event_type"]
+          id?: string
+          is_virtual?: boolean | null
+          location?: string | null
+          max_participants?: number | null
+          organizer_id?: string | null
+          registration_url?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "events_organizer_id_fkey"
+            columns: ["organizer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      glossary: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          definition: string
+          id: string
+          language: string | null
+          pronunciation: string | null
+          term: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          definition: string
+          id?: string
+          language?: string | null
+          pronunciation?: string | null
+          term: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          definition?: string
+          id?: string
+          language?: string | null
+          pronunciation?: string | null
+          term?: string
+        }
+        Relationships: []
+      }
+      notes: {
+        Row: {
+          category: string | null
+          content: string | null
+          created_at: string | null
+          id: string
+          title: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          category?: string | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          title: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          category?: string | null
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          title?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          country: string | null
+          created_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          is_teacher: boolean | null
+          level: Database["public"]["Enums"]["user_level"] | null
+          university: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          bio?: string | null
+          country?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id: string
+          is_teacher?: boolean | null
+          level?: Database["public"]["Enums"]["user_level"] | null
+          university?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          bio?: string | null
+          country?: string | null
+          created_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          is_teacher?: boolean | null
+          level?: Database["public"]["Enums"]["user_level"] | null
+          university?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      user_connections: {
+        Row: {
+          connected_user_id: string | null
+          connection_type: string | null
+          created_at: string | null
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          connected_user_id?: string | null
+          connection_type?: string | null
+          created_at?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          connected_user_id?: string | null
+          connection_type?: string | null
+          created_at?: string | null
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_connections_connected_user_id_fkey"
+            columns: ["connected_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_connections_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      videos: {
+        Row: {
+          category: Database["public"]["Enums"]["video_category"]
+          created_at: string | null
+          description: string | null
+          duration: number | null
+          id: string
+          is_featured: boolean | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string | null
+          uploader_id: string | null
+          video_url: string | null
+          views: number | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["video_category"]
+          created_at?: string | null
+          description?: string | null
+          duration?: number | null
+          id?: string
+          is_featured?: boolean | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string | null
+          uploader_id?: string | null
+          video_url?: string | null
+          views?: number | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["video_category"]
+          created_at?: string | null
+          description?: string | null
+          duration?: number | null
+          id?: string
+          is_featured?: boolean | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string | null
+          uploader_id?: string | null
+          video_url?: string | null
+          views?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "videos_uploader_id_fkey"
+            columns: ["uploader_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -18,7 +267,22 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      event_type:
+        | "workshop"
+        | "performance"
+        | "festival"
+        | "masterclass"
+        | "competition"
+      user_level: "beginner" | "intermediate" | "advanced"
+      video_category:
+        | "adavu"
+        | "varnam"
+        | "padam"
+        | "tillana"
+        | "javali"
+        | "shloka"
+        | "tutorial"
+        | "performance"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -133,6 +397,25 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      event_type: [
+        "workshop",
+        "performance",
+        "festival",
+        "masterclass",
+        "competition",
+      ],
+      user_level: ["beginner", "intermediate", "advanced"],
+      video_category: [
+        "adavu",
+        "varnam",
+        "padam",
+        "tillana",
+        "javali",
+        "shloka",
+        "tutorial",
+        "performance",
+      ],
+    },
   },
 } as const

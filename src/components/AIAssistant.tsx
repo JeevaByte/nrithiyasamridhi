@@ -1,18 +1,42 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Mic } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
+import { Tables } from '@/integrations/supabase/types';
+
+type GlossaryTerm = Tables<'glossary'>;
 
 const AIAssistant = () => {
+  const { user } = useAuth();
   const [message, setMessage] = useState('');
+  const [glossaryTerms, setGlossaryTerms] = useState<GlossaryTerm[]>([]);
   const [conversation, setConversation] = useState([
     {
       type: 'ai',
       content: 'Namaste! I am your AI Nattuvanar. Ask me about adavus, mudras, tala, or any aspect of Bharatanatyam. How can I guide your practice today?'
     }
   ]);
+
+  useEffect(() => {
+    fetchGlossaryTerms();
+  }, []);
+
+  const fetchGlossaryTerms = async () => {
+    try {
+      const { data } = await supabase
+        .from('glossary')
+        .select('*')
+        .order('term');
+      
+      setGlossaryTerms(data || []);
+    } catch (error) {
+      console.error('Error fetching glossary terms:', error);
+    }
+  };
 
   const sampleQuestions = [
     'What is the difference between Bharatanatyam and Kuchipudi?',
@@ -21,20 +45,51 @@ const AIAssistant = () => {
     'What is the story behind Varnam in Ragam Kalyani?'
   ];
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!message.trim()) return;
+
+    const userMessage = message.toLowerCase();
+    let aiResponse = 'Thank you for your question about Bharatanatyam! ';
+
+    // Check if the question is about a glossary term
+    const matchingTerm = glossaryTerms.find(term => 
+      userMessage.includes(term.term.toLowerCase())
+    );
+
+    if (matchingTerm) {
+      aiResponse = `${matchingTerm.term} (${matchingTerm.pronunciation}): ${matchingTerm.definition}`;
+    } else if (userMessage.includes('adavu')) {
+      aiResponse = 'Adavus are the basic dance steps that form the foundation of Bharatanatyam. There are different types like Tatta adavu, Natta adavu, Visharu adavu, and more. Each has specific leg and hand movements that teach balance, rhythm, and coordination.';
+    } else if (userMessage.includes('mudra')) {
+      aiResponse = 'Mudras are hand gestures that convey meaning in Bharatanatyam. There are 28 single-hand mudras (Asamyukta hasta) and 24 double-hand mudras (Samyukta hasta). Each mudra has specific meanings and can represent objects, emotions, or actions.';
+    } else if (userMessage.includes('tala')) {
+      aiResponse = 'Tala is the rhythmic framework in Bharatanatyam. Common talas include Adi tala (8 beats), Rupaka tala (6 beats), and Tisra triputa (7 beats). Understanding tala helps dancers maintain rhythm and coordination with the music.';
+    } else {
+      aiResponse += 'This is a demonstration of the AI assistant. In the full version, I would provide detailed guidance on your practice, help with rhythm counting, explain mudras, and share the beautiful stories behind each composition.';
+    }
 
     const newConversation = [
       ...conversation,
       { type: 'user', content: message },
-      { 
-        type: 'ai', 
-        content: 'Thank you for your question about Bharatanatyam! This is a demonstration of the AI assistant. In the full version, I would provide detailed guidance on your practice, help with rhythm counting, explain mudras, and share the beautiful stories behind each composition.' 
-      }
+      { type: 'ai', content: aiResponse }
     ];
 
     setConversation(newConversation);
     setMessage('');
+
+    // Save conversation to database if user is logged in
+    if (user) {
+      try {
+        await supabase.from('notes').insert({
+          user_id: user.id,
+          title: `AI Chat: ${message.substring(0, 50)}...`,
+          content: JSON.stringify(newConversation),
+          category: 'ai_chat'
+        });
+      } catch (error) {
+        console.error('Error saving conversation:', error);
+      }
+    }
   };
 
   return (
@@ -122,25 +177,23 @@ const AIAssistant = () => {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">AI Features</CardTitle>
+                  <CardTitle className="text-lg">Glossary Terms</CardTitle>
+                  <CardDescription>Available in the knowledge base</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-bharata-gold rounded-full"></div>
-                    <span className="text-sm">Rhythm corrections</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-bharata-gold rounded-full"></div>
-                    <span className="text-sm">Mudra explanations</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-bharata-gold rounded-full"></div>
-                    <span className="text-sm">Jathi to text conversion</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-2 h-2 bg-bharata-gold rounded-full"></div>
-                    <span className="text-sm">Performance feedback</span>
-                  </div>
+                <CardContent className="space-y-2 max-h-64 overflow-y-auto">
+                  {glossaryTerms.slice(0, 8).map((term) => (
+                    <Button
+                      key={term.id}
+                      variant="ghost"
+                      className="w-full text-left justify-start h-auto p-2 text-sm"
+                      onClick={() => setMessage(`What is ${term.term}?`)}
+                    >
+                      <div>
+                        <div className="font-medium">{term.term}</div>
+                        <div className="text-xs text-muted-foreground">{term.pronunciation}</div>
+                      </div>
+                    </Button>
+                  ))}
                 </CardContent>
               </Card>
             </div>
