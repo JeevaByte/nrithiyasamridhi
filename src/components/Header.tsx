@@ -71,13 +71,15 @@ const Header = () => {
   return (
     <header className="bg-white/95 dark:bg-background/90 backdrop-blur-sm shadow-sm sticky top-0 z-50 transition-colors">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-bharata-crimson to-bharata-gold rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-sm">BC</span>
+          <Link to="/" className="flex items-center space-x-4 group">
+            <div className="w-14 h-14 bg-gradient-to-br from-bharata-crimson to-bharata-gold rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+              <span className="text-white font-bold text-2xl tracking-wider select-none">NS</span>
             </div>
-            <span className="font-bold text-xl text-bharata-crimson dark:text-bharata-gold transition-colors">Bharata Connect</span>
+            <span className="font-bold text-3xl tracking-tight text-bharata-crimson dark:text-bharata-gold transition-colors uppercase font-playfair select-none">
+              nithiyasamridhi
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -192,4 +194,3 @@ const Header = () => {
 };
 
 export default Header;
-

@@ -1,8 +1,10 @@
-
 import { Button } from '@/components/ui/button';
 import { Calendar, Globe, Video } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="pt-20 pb-16 section-gradient">
       <div className="container mx-auto px-4">
@@ -24,6 +26,7 @@ const Hero = () => {
                 <Button 
                   size="lg" 
                   className="bg-bharata-crimson hover:bg-bharata-deepRed text-white px-8 py-3"
+                  onClick={() => navigate('/learn')}
                 >
                   <Video className="w-5 h-5 mr-2" />
                   Start Learning
@@ -32,6 +35,7 @@ const Hero = () => {
                   variant="outline" 
                   size="lg"
                   className="border-bharata-gold text-bharata-crimson hover:bg-bharata-gold/10 px-8 py-3"
+                  onClick={() => navigate('/community')}
                 >
                   <Globe className="w-5 h-5 mr-2" />
                   Explore Community
