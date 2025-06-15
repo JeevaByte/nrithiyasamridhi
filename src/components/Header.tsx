@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button"
@@ -10,8 +11,45 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { Menu } from "lucide-react"
+import { Menu, Sun, Moon } from "lucide-react"
 import { useAuth } from '@/hooks/useAuth';
+
+// Theme Toggle helper
+const ThemeToggle = () => {
+  // Determine the theme and store in localStorage so it persists
+  const [theme, setTheme] = React.useState<'light' | 'dark'>(() => {
+    // Check local storage or prefer system
+    if (typeof window === 'undefined') return 'light';
+    return (localStorage.getItem('theme') as 'light' | 'dark') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  });
+
+  React.useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [theme]);
+
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      className="transition-colors"
+    >
+      {theme === 'dark' ? (
+        <Sun className="text-yellow-400" />
+      ) : (
+        <Moon className="text-bharata-crimson" />
+      )}
+    </Button>
+  );
+};
 
 const Header = () => {
   const { user, signOut } = useAuth();
@@ -31,7 +69,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-white/95 backdrop-blur-sm shadow-sm sticky top-0 z-50">
+    <header className="bg-white/95 dark:bg-background/90 backdrop-blur-sm shadow-sm sticky top-0 z-50 transition-colors">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -39,7 +77,7 @@ const Header = () => {
             <div className="w-8 h-8 bg-gradient-to-br from-bharata-crimson to-bharata-gold rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-sm">BC</span>
             </div>
-            <span className="font-bold text-xl text-bharata-crimson">Bharata Connect</span>
+            <span className="font-bold text-xl text-bharata-crimson dark:text-bharata-gold transition-colors">Bharata Connect</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -48,15 +86,16 @@ const Header = () => {
               <Link
                 key={item.name}
                 to={item.href}
-                className="text-gray-600 hover:text-bharata-crimson transition-colors"
+                className="text-gray-600 dark:text-gray-200 hover:text-bharata-crimson hover:dark:text-bharata-gold transition-colors"
               >
                 {item.name}
               </Link>
             ))}
           </nav>
 
-          {/* Desktop Auth Buttons */}
+          {/* Desktop Auth Buttons + Theme Toggle */}
           <div className="hidden md:flex items-center space-x-4">
+            <ThemeToggle />
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -94,8 +133,9 @@ const Header = () => {
             )}
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Mobile menu button + Theme Toggle */}
+          <div className="md:hidden flex items-center gap-2">
+            <ThemeToggle />
             <Button
               variant="ghost"
               size="sm"
@@ -108,13 +148,13 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 border-t">
+          <div className="md:hidden py-4 border-t dark:border-border bg-white dark:bg-background/95 transition-colors">
             <nav className="flex flex-col space-y-4">
               {navigationItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className="text-gray-600 hover:text-bharata-crimson transition-colors"
+                  className="text-gray-600 dark:text-gray-200 hover:text-bharata-crimson hover:dark:text-bharata-gold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
@@ -124,7 +164,7 @@ const Header = () => {
                 <>
                   <Link
                     to="/dashboard"
-                    className="text-gray-600 hover:text-bharata-crimson transition-colors"
+                    className="text-gray-600 dark:text-gray-200 hover:text-bharata-crimson hover:dark:text-bharata-gold transition-colors"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Dashboard
@@ -152,3 +192,4 @@ const Header = () => {
 };
 
 export default Header;
+
