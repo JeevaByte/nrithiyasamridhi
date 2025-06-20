@@ -1,10 +1,13 @@
 
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar, Globe, Video, Star, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import BookingModal from './BookingModal';
+import LearningQuiz from './LearningQuiz';
 
 const Hero = () => {
-  const navigate = useNavigate();
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showQuizModal, setShowQuizModal] = useState(false);
 
   return (
     <section className="pt-24 pb-20 temple-gradient overflow-hidden relative">
@@ -43,7 +46,7 @@ const Hero = () => {
                 <Button 
                   size="lg" 
                   className="btn-primary px-10 py-6 text-lg font-bold animate-divine-glow"
-                  onClick={() => navigate('/learn')}
+                  onClick={() => setShowBookingModal(true)}
                 >
                   <Calendar className="w-6 h-6 mr-3" />
                   Book Free Guidance Session
@@ -52,7 +55,7 @@ const Hero = () => {
                   variant="outline" 
                   size="lg"
                   className="btn-secondary px-10 py-6 text-lg font-bold"
-                  onClick={() => navigate('/learn')}
+                  onClick={() => setShowQuizModal(true)}
                 >
                   <Video className="w-6 h-6 mr-3" />
                   Take Learning Quiz
@@ -133,6 +136,16 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <BookingModal 
+        isOpen={showBookingModal} 
+        onClose={() => setShowBookingModal(false)} 
+      />
+      <LearningQuiz 
+        isOpen={showQuizModal} 
+        onClose={() => setShowQuizModal(false)} 
+      />
     </section>
   );
 };

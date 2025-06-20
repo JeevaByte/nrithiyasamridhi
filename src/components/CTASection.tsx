@@ -1,10 +1,13 @@
 
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar, Video, Users, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import BookingModal from './BookingModal';
+import LearningQuiz from './LearningQuiz';
 
 const CTASection = () => {
-  const navigate = useNavigate();
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [showQuizModal, setShowQuizModal] = useState(false);
 
   return (
     <section className="py-24 devotional-gradient text-white relative overflow-hidden">
@@ -33,7 +36,7 @@ const CTASection = () => {
             <Button 
               size="lg" 
               className="bg-white hover:bg-bharata-ivory text-bharata-crimson font-bold px-12 py-6 text-xl shadow-2xl hover:shadow-white/20 transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 border-2 border-bharata-saffron animate-divine-glow"
-              onClick={() => navigate('/learn')}
+              onClick={() => setShowBookingModal(true)}
             >
               <Calendar className="w-6 h-6 mr-3" />
               Book Free Guidance Session
@@ -42,7 +45,7 @@ const CTASection = () => {
               variant="outline" 
               size="lg"
               className="border-2 border-white text-white hover:bg-white hover:text-bharata-crimson px-12 py-6 text-xl font-bold shadow-2xl hover:shadow-white/20 transform hover:-translate-y-1 hover:scale-105 transition-all duration-300"
-              onClick={() => navigate('/learn')}
+              onClick={() => setShowQuizModal(true)}
             >
               <Video className="w-6 h-6 mr-3" />
               Take Learning Quiz
@@ -96,6 +99,16 @@ const CTASection = () => {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <BookingModal 
+        isOpen={showBookingModal} 
+        onClose={() => setShowBookingModal(false)} 
+      />
+      <LearningQuiz 
+        isOpen={showQuizModal} 
+        onClose={() => setShowQuizModal(false)} 
+      />
     </section>
   );
 };

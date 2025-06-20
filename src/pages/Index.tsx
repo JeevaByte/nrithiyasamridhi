@@ -7,6 +7,7 @@ import CommunityShowcase from '../components/CommunityShowcase';
 import BlogPreview from '../components/BlogPreview';
 import TestimonialsSection from '../components/TestimonialsSection';
 import CTASection from '../components/CTASection';
+import SocialProofStats from '../components/SocialProofStats';
 import HubSpotFormPlaceholder from '../components/HubSpotFormPlaceholder';
 import Footer from '../components/Footer';
 
@@ -15,6 +16,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <Hero />
+      <SocialProofStats />
       <FeaturesSection />
       <AIAssistant />
       <TestimonialsSection />
