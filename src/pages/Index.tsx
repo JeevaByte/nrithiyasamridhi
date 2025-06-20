@@ -1,9 +1,12 @@
+
 import Header from '../components/Header';
 import Hero from '../components/Hero';
 import FeaturesSection from '../components/FeaturesSection';
 import AIAssistant from '../components/AIAssistant';
 import CommunityShowcase from '../components/CommunityShowcase';
 import BlogPreview from '../components/BlogPreview';
+import TestimonialsSection from '../components/TestimonialsSection';
+import CTASection from '../components/CTASection';
 import HubSpotFormPlaceholder from '../components/HubSpotFormPlaceholder';
 import Footer from '../components/Footer';
 
@@ -14,10 +17,10 @@ const Index = () => {
       <Hero />
       <FeaturesSection />
       <AIAssistant />
+      <TestimonialsSection />
       <CommunityShowcase />
-      {/* --- Blog Section from Sanity --- */}
       <BlogPreview />
-      {/* --- HubSpot CRM: Embed form spot --- */}
+      <CTASection />
       <HubSpotFormPlaceholder />
       <Footer />
     </div>
