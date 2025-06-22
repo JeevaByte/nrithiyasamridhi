@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,10 +8,12 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import Admin from "./pages/Admin";
 import Glossary from "./pages/Glossary";
 import Learn from "./pages/Learn";
 import Community from "./pages/Community";
 import AuthGuard from "./components/AuthGuard";
+import RoleGuard from "./components/RoleGuard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +35,11 @@ const App = () => (
               <AuthGuard>
                 <Dashboard />
               </AuthGuard>
+            } />
+            <Route path="/admin" element={
+              <RoleGuard allowedRoles={['admin']}>
+                <Admin />
+              </RoleGuard>
             } />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

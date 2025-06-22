@@ -11,8 +11,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { Menu, Sun, Moon, Calendar, ChevronDown } from "lucide-react"
+import { Menu, Sun, Moon, Calendar, ChevronDown, Shield } from "lucide-react"
 import { useAuth } from '@/hooks/useAuth';
+import { useUserRole } from '@/hooks/useUserRole';
 
 // Available languages for UI
 const LANGUAGES = [
@@ -58,6 +59,7 @@ const ThemeToggle = () => {
 
 const Header = () => {
   const { user, signOut } = useAuth();
+  const { isAdmin } = useUserRole();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [lang, setLang] = useState('en');
   const navigate = useNavigate();
@@ -180,6 +182,12 @@ const Header = () => {
                   <DropdownMenuItem onClick={() => navigate('/dashboard')}>
                     Dashboard
                   </DropdownMenuItem>
+                  {isAdmin && (
+                    <DropdownMenuItem onClick={() => navigate('/admin')}>
+                      <Shield className="w-4 h-4 mr-2" />
+                      Admin Panel
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem onClick={handleSignOut}>
                     Sign out
                   </DropdownMenuItem>
@@ -255,6 +263,16 @@ const Header = () => {
                     >
                       Dashboard
                     </Link>
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        className="text-gray-600 dark:text-gray-200 hover:text-bharata-crimson hover:dark:text-bharata-gold transition-colors flex items-center py-2"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <Shield className="w-4 h-4 mr-2" />
+                        Admin Panel
+                      </Link>
+                    )}
                     <Button variant="ghost" onClick={handleSignOut} className="justify-start p-0 mt-2">
                       Sign out
                     </Button>
